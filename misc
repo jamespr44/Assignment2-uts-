@@ -1,1 +1,51 @@
-n n
+// pin numbers for lights and buttons defined
+int TRAFFIC_RED = 2;
+int TRAFFIC_YELLOW = 3;
+int TRAFFIC_GREEN = 4;
+int CROSSING_RED = 7;
+int CROSSING_GREEN = 6;
+int BUTTON_1 = 8;
+int BUTTON_2 = 9;
+
+// setup for millis (largest arduino variable size)
+unsigned long currentTime = 0;
+unsigned long previousTime = 0;
+
+// setup to reduce lines of code when changing light colours
+void Lights(bool T_RED, bool T_YELLOW, bool T_GREEN, bool C_RED, bool C_GREEN) {
+
+	digitalWrite(TRAFFIC_RED, T_RED);
+    digitalWrite(TRAFFIC_YELLOW, T_YELLOW);
+    digitalWrite(TRAFFIC_GREEN, T_GREEN);
+    digitalWrite(CROSSING_RED, C_RED);
+    digitalWrite(CROSSING_GREEN, C_GREEN);
+  
+} 
+
+
+void setup()
+{
+  // pins for variables defined as inputs or outputs
+  
+  pinMode(TRAFFIC_RED, OUTPUT);
+  pinMode(TRAFFIC_YELLOW, OUTPUT);
+  pinMode(TRAFFIC_GREEN, OUTPUT);
+  pinMode(CROSSING_RED, OUTPUT);
+  pinMode(CROSSING_GREEN, OUTPUT);
+  pinMode(BUTTON_1, INPUT);
+  pinMode(BUTTON_2, INPUT);
+  
+  // millis setup for prinitng states
+  Serial.println ("| State 1 | INPUT = 0 | TRAFFIC = GREEN | PEDESTRIAN = RED |");
+  
+  
+  // initialise serial communication at 9600 baud rate
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  
+  // state 1
+  currentTime = millis();
+
