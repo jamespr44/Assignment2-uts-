@@ -8,11 +8,11 @@ int BUTTON_1 = 8;
 int BUTTON_2 = 9;
 
 // setup for millis (largest arduino variable size)
-unsigned long currentTime = 0;
-unsigned long previousTime = 0;
-unsigned long i = 0;
 
-// tmes for different states
+unsigned long previousTime = 0;
+unsigned long i = (millis() - previousTime);
+
+// times for different states
 int a = 2000;
 int b = 3000;
 int c = 4000;
@@ -24,7 +24,7 @@ int g = 9000;
 // setup to reduce lines of code when changing light colours
 void Lights(bool T_RED, bool T_YELLOW, bool T_GREEN, bool C_RED, bool C_GREEN) {
 
-	digitalWrite(TRAFFIC_RED, T_RED);
+    digitalWrite(TRAFFIC_RED, T_RED);
     digitalWrite(TRAFFIC_YELLOW, T_YELLOW);
     digitalWrite(TRAFFIC_GREEN, T_GREEN);
     digitalWrite(CROSSING_RED, C_RED);
@@ -57,8 +57,9 @@ void loop()
 {
   
   // state 1
-  currentTime = millis();
-if (currentTime - previousTime > 2000) { 
+
+if (i > a) { 
     Serial.println ("| State 1 | INPUT = 0 | TRAFFIC = GREEN | PEDESTRIAN = RED |");
     previousTime = currentTime; // reset previousTime so currentTime and previousTime are identical.
   }
+else if (i > a) && ( { 
