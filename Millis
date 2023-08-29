@@ -1,2 +1,225 @@
+#define BUTTON_PIN 2
+#define BUTTON_PIN2 3
+int redpedLED = 6;
+int greenpedLED = 7;
+int redcarLED = 8;
+int yellowcarLED = 9;
+int greencarLED = 10;
 
+void setup() 
+{
+  Serial.begin(9600);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_PIN2, INPUT_PULLUP);
+  pinMode(redpedLED,OUTPUT);
+  pinMode(greenpedLED,OUTPUT);
+  pinMode(redcarLED,OUTPUT);
+  pinMode(yellowcarLED,OUTPUT);
+  pinMode(greencarLED,OUTPUT);
+}
+
+void loop() {
+  byte buttonState = digitalRead(BUTTON_PIN);
+  byte buttonState2 = digitalRead(BUTTON_PIN2);
+  
+
+  if (buttonState == LOW){
+  Serial.println("Button 1 is pressed");
+  delay(100);
+  //a  
+  Serial.println("State 1 Button 1 Pedestrian:Red Traffic:Green");
+  digitalWrite(greencarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000); 
+  Serial.println("State 1 Button 1 Pedestrian:Red Traffic:Green");
+  delay(1000);
+  digitalWrite(greencarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0); 
+  //b
+  Serial.println("State 2 Button 1 Pedestrian:Red Traffic:Yellow");
+  digitalWrite(yellowcarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000); 
+  for(int i=0;i<2;i++ )
+  {
+  Serial.println("State 2 Button 1 Pedestrian:Red Traffic:Yellow");
+  delay(2000); 
+  }
+  digitalWrite(yellowcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //c
+  Serial.println("State 3 Button 1 Pedestrian:Red Traffic:Red");
+  digitalWrite(redcarLED, HIGH); 
+  digitalWrite(redpedLED, HIGH);
+  delay(1000);
+  digitalWrite(redcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //d
+  Serial.println("State 4 Button 1 Pedestrian:Green Traffic:Red");
+  digitalWrite(redcarLED, HIGH); 
+  digitalWrite(greenpedLED, HIGH);
+  delay(2000); 
+  Serial.println("State 4 Button 1 Pedestrian:Green Traffic:Red");
+  delay(2000); 
+  Serial.println("State 4 Button 1 Pedestrian:Green Traffic:Red");
+  delay(1000);
+  digitalWrite(redcarLED, LOW);  
+  digitalWrite(greenpedLED, LOW);
+  delay(0);
+  //e+f
+  Serial.println("State 5 Button 1 Pedestrian:Red (5hz flash) Traffic:Red");
+  for(int i=0;i<10;i++ )
+  {
+  digitalWrite(redpedLED, HIGH);
+  delay(100);
+  digitalWrite(redpedLED, LOW);
+  delay(100);
+  }
+  Serial.println("State 5 Button 1 Pedestrian:Red (5hz flash) Traffic:Red");
+   for(int i=0;i<10;i++ )
+  {
+  digitalWrite(redpedLED, HIGH);
+  delay(100);
+  digitalWrite(redpedLED, LOW);
+  delay(100);
+  }
+  Serial.println("State 5 Button 1 Pedestrian:Red (5hz flash) Traffic:Red");
+  digitalWrite(redcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //g
+  Serial.println("State 6 Button 1 Pedestrian:Red Traffic:Red");
+  digitalWrite(redcarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000);
+  for(int i=0;i<2;i++ )
+  {
+  Serial.println("State 6 Button 1 Pedestrian:Red Traffic:Red");
+  delay(2000);
+  }
+  digitalWrite(redcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //h
+  Serial.println("State 7 Button 1 Pedestrian:Red Traffic:Green");
+  digitalWrite(greencarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000);
+  for(int i=0;i<4;i++ )
+  {
+  Serial.println("State 7 Button 1 Pedestrian:Red Traffic:Green");
+  delay(2000);
+  }
+  Serial.println("State 7 Button 1 Pedestrian:Red Traffic:Green");
+  digitalWrite(greencarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  }
+
+
+  if (buttonState2 == LOW){
+  Serial.println("Button 2 is pressed");
+  delay(100);
+  Serial.println("Button 1 is pressed");
+  delay(100);
+  //a  
+  Serial.println("State 1 Button 1 Pedestrian:Red Traffic:Green");
+  digitalWrite(greencarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000); 
+  Serial.println("State 1 Button 1 Pedestrian:Red Traffic:Green");
+  delay(1000);
+  digitalWrite(greencarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0); 
+  //b
+  Serial.println("State 2 Button 1 Pedestrian:Red Traffic:Yellow");
+  digitalWrite(yellowcarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000); 
+  for(int i=0;i<2;i++ )
+  {
+  Serial.println("State 2 Button 1 Pedestrian:Red Traffic:Yellow");
+  delay(2000); 
+  }
+  digitalWrite(yellowcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //c
+  Serial.println("State 3 Button 1 Pedestrian:Red Traffic:Red");
+  digitalWrite(redcarLED, HIGH); 
+  digitalWrite(redpedLED, HIGH);
+  delay(1000);
+  digitalWrite(redcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //d
+  Serial.println("State 4 Button 1 Pedestrian:Green Traffic:Red");
+  digitalWrite(redcarLED, HIGH); 
+  digitalWrite(greenpedLED, HIGH);
+  delay(2000); 
+  Serial.println("State 4 Button 1 Pedestrian:Green Traffic:Red");
+  delay(2000); 
+  Serial.println("State 4 Button 1 Pedestrian:Green Traffic:Red");
+  delay(1000);
+  digitalWrite(redcarLED, LOW);  
+  digitalWrite(greenpedLED, LOW);
+  delay(0);
+  //e+f
+  Serial.println("State 5 Button 1 Pedestrian:Red (5hz flash) Traffic:Red");
+  for(int i=0;i<10;i++ )
+  {
+  digitalWrite(redpedLED, HIGH);
+  delay(100);
+  digitalWrite(redpedLED, LOW);
+  delay(100);
+  }
+  Serial.println("State 5 Button 1 Pedestrian:Red (5hz flash) Traffic:Red");
+   for(int i=0;i<10;i++ )
+  {
+  digitalWrite(redpedLED, HIGH);
+  delay(100);
+  digitalWrite(redpedLED, LOW);
+  delay(100);
+  }
+  Serial.println("State 5 Button 1 Pedestrian:Red (5hz flash) Traffic:Red");
+  digitalWrite(redcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //g
+  Serial.println("State 6 Button 1 Pedestrian:Red Traffic:Red");
+  digitalWrite(redcarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000);
+  for(int i=0;i<2;i++ )
+  {
+  Serial.println("State 6 Button 1 Pedestrian:Red Traffic:Red");
+  delay(2000);
+  }
+  digitalWrite(redcarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  //h
+  Serial.println("State 7 Button 1 Pedestrian:Red Traffic:Green");
+  digitalWrite(greencarLED, HIGH);
+  digitalWrite(redpedLED, HIGH);
+  delay(2000);
+  for(int i=0;i<4;i++ )
+  {
+  Serial.println("State 7 Button 1 Pedestrian:Red Traffic:Green");
+  delay(2000);
+  }
+  Serial.println("State 7 Button 1 Pedestrian:Red Traffic:Green");
+  digitalWrite(greencarLED, LOW);
+  digitalWrite(redpedLED, LOW);
+  delay(0);
+  }
+}
+
+  
+  
+ 
 
