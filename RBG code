@@ -1,7 +1,34 @@
-int rgb_rainbow[3][3] = { { 255,  0,    0 },    // red
-                          { 255, 127,   0 },    // orange
-                          {   0, 255,   0 }};    // green
+const int pins[3] = {9,10,11}; //9= red 10=blue 11= green 
 
-to access colours:
+// Define an array to hold the RGB values for red, green, and orange
+int colors[][3] = {
+  {255, 0, 0},    // Red
+  {0, 0, 255},    // Green
+  {255, 0, 127}   // Orange
+};
 
+void setup() {
+  pinMode(pins[0], OUTPUT);
+  pinMode(pins[1], OUTPUT);
+  pinMode(pins[2], OUTPUT);
+}
 
+void setColor(int colorIndex) {
+  analogWrite(pins[0], colors[colorIndex][0]);
+  analogWrite(pins[1], colors[colorIndex][1]);
+  analogWrite(pins[2], colors[colorIndex][2]);
+}
+
+void loop() {
+  // Set the LED to Red
+  setColor(0);
+  delay(2000); // Wait for 2 seconds
+  
+  // Set the LED to Green
+  setColor(1);
+  delay(2000); // Wait for 2 seconds
+  
+  // Set the LED to Orange
+  setColor(2);
+  delay(2000); // Wait for 2 seconds
+}
