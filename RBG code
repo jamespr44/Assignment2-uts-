@@ -1,0 +1,7 @@
+int rgb_rainbow[3][3] = { { 255,  0,    0 },    // red
+                          { 255, 127,   0 },    // orange
+                          {   0, 255,   0 }};    // green
+
+to access colours:
+
+
