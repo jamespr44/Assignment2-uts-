@@ -4,8 +4,7 @@ const int pins[3] = {9,10,11}; //9= red 10=blue 11= green
 int colors[][3] = {
   {255, 0, 0},    // Red
   {0, 0, 255},    // Green
-  {255, 0, 127}   // Orange
-};
+  {255, 0, 165}};  // Orange
 
 void setup() {
   pinMode(pins[0], OUTPUT);
@@ -32,3 +31,5 @@ void loop() {
   setColor(2);
   delay(2000); // Wait for 2 seconds
 }
+
+
