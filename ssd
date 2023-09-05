@@ -1,6 +1,6 @@
 int redLed2 = 10;
 int greenLed2 = 11;
-int button = 10;
+int button = 9;
 
 const int pins[3] = { 5, 6, 3 };  //9= red 10=blue 11= green
 
