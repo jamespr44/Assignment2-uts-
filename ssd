@@ -1,35 +1,35 @@
-int redLed2 = 8;
-int greenLed2 = 9;
+int redLed2 = 10;
+int greenLed2 = 11;
 int button = 10;
-int counter = 9;
 
-const int pins[3] = {5, 6, 3}; // 5 = red, 6 = blue, 3 = green
+const int pins[3] = { 5, 6, 3 };  //9= red 10=blue 11= green
 
 int colours[][3] = {
-  {255, 0, 0},   // Red
-  {0, 255, 0},   // Green
-  {255, 165, 0}  // Orange
+  { 255, 0, 0 },   // Red
+  { 0, 0, 255 },   // Green
+  { 255, 0, 165 }  // orange
 };
- int num_array[10][7] = {
-    {1, 1, 1, 1, 1, 1, 0}, // 0
-    {0, 1, 1, 0, 0, 0, 0}, // 1
-    {1, 1, 0, 1, 1, 0, 1}, // 2
-    {1, 1, 1, 1, 0, 0, 1}, // 3
-    {0, 1, 1, 0, 0, 1, 1}, // 4
-    {1, 0, 1, 1, 0, 1, 1}, // 5
-    {1, 0, 1, 1, 1, 1, 1}, // 6
-    {1, 1, 1, 0, 0, 0, 0}, // 7
-    {1, 1, 1, 1, 1, 1, 1}, // 8
-    {1, 1, 1, 0, 0, 1, 1}  // 9
-  };
+
+  int segAtoGpinouts[7] = {1,2,4,7,8,12,13};     // this is an array for the pins?
+  int num_array[10][7] = { { 1, 1, 1, 1, 1, 1, 0 },    // 0
+                           { 0, 1, 1, 0, 0, 0, 0 },    // 1
+                           { 1, 1, 0, 1, 1, 0, 1 },    // 2
+                           { 1, 1, 1, 1, 0, 0, 1 },    // 3
+                           { 0, 1, 1, 0, 0, 1, 1 },    // 4
+                           { 1, 0, 1, 1, 0, 1, 1 },    // 5
+                           { 1, 0, 1, 1, 1, 1, 1 },    // 6
+                           { 1, 1, 1, 0, 0, 0, 0 },    // 7
+                           { 1, 1, 1, 1, 1, 1, 1 },    // 8
+                           { 1, 1, 1, 0, 0, 1, 1 } };  // 9
 
 
 bool sequenceactive = false;
 
-unsigned long Bpressed = 0; // Changed to unsigned long for millis()
-unsigned long ssdcounter = 9; // Changed to unsigned long
-unsigned long countchange = 0; // Changed to unsigned long
-unsigned long i = 0; // Changed to unsigned long
+unsigned long Bpressed = 0;  // Changed to unsigned long for millis()
+int  ssdcount= 9;
+unsigned long countchange = 0;
+int counter = 20;
+unsigned long i = 0;
 int interval = 50;
 unsigned long previousmillis = 0;
 unsigned long a = 3000;
@@ -41,11 +41,14 @@ unsigned long f = 4000;
 unsigned long g = 8000;
 unsigned long h = 10000;
 
+
+
 void setColour(int colourIndex) {
   analogWrite(pins[0], colours[colourIndex][0]);
   analogWrite(pins[1], colours[colourIndex][1]);
   analogWrite(pins[2], colours[colourIndex][2]);
 }
+
 
 void setup() {
   Serial.begin(9600);
@@ -53,15 +56,14 @@ void setup() {
   pinMode(redLed2, OUTPUT);
   pinMode(greenLed2, OUTPUT);
 
+
   pinMode(pins[0], OUTPUT);
   pinMode(pins[1], OUTPUT);
   pinMode(pins[2], OUTPUT);
 
   digitalWrite(redLed2, HIGH);
-  setColour(0); // Start with Red
+  setColour(1);
 
-  int segAtoGpinouts[7] = {2, 3, 4, 5, 6, 7, 8}; // this is an array for the pins?
- 
 
   for (int i = 0; i < 7; i++) {
     pinMode(segAtoGpinouts[i], OUTPUT);
@@ -69,52 +71,72 @@ void setup() {
 }
 
 void loop() {
+
   i = millis() - Bpressed;
+
 
   if ((digitalRead(button) == HIGH) && !sequenceactive) {
     Bpressed = millis();
-    sequenceactive = true; // Set the sequenceactive flag
+    sequenceactive = true;  // Set the sequenceactive flag
   }
 
-  if (sequenceactive) { // Only execute the sequence when the flag is set
+  if (sequenceactive) {  // Only execute the sequence when the flag is set
     if (i < a) {
-      setColour(0); // Red
-    } else if (i >= a && i < (a + b)) {
-      setColour(1); // Green
-    } else if (i >= (a + b) && i < (a + b + c)) {
-      setColour(2); // Orange
-    } else if (i >= (a + b + c + d)) {
+      setColour(1);
+    }
+
+    if (i >= a) {
+      setColour(2);
+    }
+
+    if (i >= a + b) {
+      setColour(0);
+    }
+
+    if (i >= a + b + c) {
       digitalWrite(redLed2, LOW);
       digitalWrite(greenLed2, HIGH);
-      setColour(2); // Orange
+      setColour(0);
+    }
+
+    if (i >= a + b + c + d) {
 
       if (millis() - countchange >= 1000) {
         countchange = millis();
-        ssdcounter--;
-        if (ssdcounter < 0) {
-          ssdcounter = 9;
+        ssdcount--;
+        if (ssdcount == -1) {
+          ssdcount = 9;
         }
       }
-      ssdNumberWrite(ssdcounter);
+      ssdNumberWrite(ssdcount);
 
-      if (millis() - previousmillis >= interval) {
-        previousmillis = millis();
+      digitalWrite(greenLed2, LOW);
+      digitalWrite(redLed2, LOW);
 
-        if (digitalRead(redLed2) == LOW) {
-          digitalWrite(redLed2, HIGH);
-        } else {
-          digitalWrite(redLed2, LOW);
-          ssdcounter = 9;
+      while (counter > 0) {
+        if (millis() - previousmillis >= interval) {
+          previousmillis = millis();
+
+          if (digitalRead(redLed2 == LOW)) {
+            digitalWrite(redLed2, HIGH);
+          }
+
+          if (digitalRead(redLed2 == HIGH)) {
+            digitalWrite(redLed2, LOW);
+            counter--;
+          }
+
           sequenceactive = false;
+          counter = 20;
         }
       }
+      setColour(1);
+      digitalWrite(redLed2, HIGH);
     }
   }
 }
 
 void ssdNumberWrite(int number) {
-  int segAtoGpinouts[7] = {2, 3, 4, 5, 6, 7, 8};
-
   for (int i = 0; i < 7; i++) {
     digitalWrite(segAtoGpinouts[i], num_array[number][i]);
   }
