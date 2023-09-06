@@ -1,0 +1,35 @@
+int led1 = 3;           // the PWM pin the LED is attached to
+int brightness = 256;    // how bright the LED is
+int PIN_POT = A2;
+
+
+void setup() {
+  
+  // declare pin 3 to be an led output:
+  pinMode(led, OUTPUT);
+  
+  Serial.begin(9600);
+}
+
+
+// the loop routine runs over and over again forever:
+
+void loop() {
+  
+  //assigns the input from potentiometer to Potentiometer value
+  int POT_value = analogRead(PIN_POT);
+  
+  // links the brightness variable to pin 3 (led1) 
+  // must assign all leds that need to be dimmed to brighness
+  analogWrite(led1, brightness);
+  
+  
+  if ((POT_value - 10)/4 < 10) {
+    brightness = 10;
+  }
+  else {
+    brightness = (POT_value/4) - 3;
+  }
+    
+ 
+}
