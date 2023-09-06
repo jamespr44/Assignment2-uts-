@@ -1,0 +1,28 @@
+
+// setup for millis (unsigned long is largest arduino variable size)
+unsigned long currentTime = 0;
+unsigned long previousTime = 0;
+
+void setup() {
+
+Serial.begin(9600); // to set up communication between serial port and arduino
+
+}
+
+void loop() {
+  
+
+  currentTime = millis();
+
+// carefull with the names of current time and previous time as these names may already be in use and could 
+// interfere with the running fo code. perhaps rename them to currenttime2 and previoustime2 and set them up as new ints
+
+// the (variable) sections below are to be replaced with a new ints, bools or strings that have their value changed during the 
+// different states of the code. these values can then be printed out every seccond.
+
+  if (currentTime - previousTime > 1000) { 
+    Serial.println ("| State (variable) | INPUT (variable) | TRAFFIC (variable) | PEDESTRIAN (variable) |");
+    previousTime = currentTime; // reset previousTime so currentTime and previousTime are identical.
+    }
+
+  }
