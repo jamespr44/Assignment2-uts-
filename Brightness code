@@ -2,13 +2,16 @@ int led1 = 3;           // the PWM pin the LED is attached to
 int brightness = 256;    // how bright the LED is
 int PIN_POT = A2;
 
+// the setup routine runs once when you press reset:
 
 void setup() {
   
   // declare pin 3 to be an led output:
-  pinMode(led, OUTPUT);
-  
+  pinMode(led1, OUTPUT);
+
   Serial.begin(9600);
+
+
 }
 
 
@@ -20,16 +23,21 @@ void loop() {
   int POT_value = analogRead(PIN_POT);
   
   // links the brightness variable to pin 3 (led1) 
-  // must assign all leds that need to be dimmed to brighness
+  //must assign all leds that need to be dimmed to brighness
   analogWrite(led1, brightness);
   
   
-  if ((POT_value - 10)/4 < 10) {
+  // turned from a value of 2^10 to 2^8 where it if it less that 10 it is set to 10 so light is alaways on.
+  if (((POT_value +1)/4)-1 < 10) {
     brightness = 10;
   }
-  else {
-    brightness = (POT_value/4) - 3;
+  else { // brightness is = to the potentiometer value but in 2^8 instead of 2^10
+    brightness = ((POT_value+1)/4) - 1;
   }
     
  
+
+  Serial.println (brightness);
 }
+
+
