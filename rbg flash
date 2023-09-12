@@ -1,0 +1,38 @@
+const int ledPin = 10;  // Define the LED pin
+const long flashDuration = 4000; // Duration in milliseconds (4 seconds)
+const long interval = 100; // Interval in milliseconds for LED toggling (half a second)
+
+unsigned long previousMillis = 0; // Holds the last time the LED state was toggled
+bool ledState = LOW;  // Tracks the current state of the LED (LOW = off, HIGH = on)
+bool flashing = false; // Tracks whether the LED is currently flashing
+
+void setup() {
+  pinMode(ledPin, OUTPUT);  // Set the LED pin as an OUTPUT
+  digitalWrite(ledPin, LOW); // Ensure the LED starts in the off state
+}
+
+
+void loop() {
+  unsigned long currentMillis = millis();  // Get the current time
+
+  // Check if it's time to start the flashing sequence
+  if (!flashing) {
+    previousMillis = currentMillis; // Record the start time
+    flashing = true; // Set the flashing flag to true
+  }
+
+  // Check if the flashing duration has elapsed
+  if (currentMillis - previousMillis <= flashDuration) {
+    // Check if it's time to toggle the LED state
+    if (currentMillis - previousMillis >= interval) {
+      // Toggle the LED state
+      ledState = !ledState;
+      digitalWrite(ledPin, ledState);
+      previousMillis = currentMillis; // Update the previousMillis
+    }
+  } else {
+    // If the flashing duration has elapsed, turn off the LED and reset the flag
+    digitalWrite(ledPin, LOW);
+    flashing = false;
+  }
+}
