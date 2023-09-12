@@ -1,141 +1,40 @@
-int redLed2 = 10;
-int greenLed2 = 11;
-int button = 15;
-
-const int pins[3] = { 5, 6, 3 };  //9= red 10=blue 11= green
-
-int colours[][3] = {
-  { 255, 0, 0 },   // Red
-  { 0, 0, 255 },   // Green
-  { 255, 0, 165 }  // orange
-};
-
-  int segAtoGpinouts[7] = {9,2,4,7,8,12,13};     // this is an array for the pins?
-  int num_array[10][7] = { { 1, 1, 1, 1, 1, 1, 0 },    // 0
-                           { 0, 1, 1, 0, 0, 0, 0 },    // 1
-                           { 1, 1, 0, 1, 1, 0, 1 },    // 2
-                           { 1, 1, 1, 1, 0, 0, 1 },    // 3
-                           { 0, 1, 1, 0, 0, 1, 1 },    // 4
-                           { 1, 0, 1, 1, 0, 1, 1 },    // 5
-                           { 1, 0, 1, 1, 1, 1, 1 },    // 6
-                           { 1, 1, 1, 0, 0, 0, 0 },    // 7
-                           { 1, 1, 1, 1, 1, 1, 1 },    // 8
-                           { 1, 1, 1, 0, 0, 1, 1 } };  // 9
-
-
-bool sequenceactive = false;
-
-unsigned long Bpressed = 0;  // Changed to unsigned long for millis()
-int  ssdcount= 9;
+int counter = 9;
 unsigned long countchange = 0;
-int counter = 20;
-unsigned long i = 0;
-int interval = 50;
-unsigned long previousmillis = 0;
 
-unsigned long a = 3000;
-unsigned long b = 6000;
-unsigned long c = 1000;
-unsigned long d = 5000;
-unsigned long e = 5000;
-unsigned long f = 4000;
-unsigned long g = 8000;
-unsigned long h = 10000;
+int segAtoGpinouts[7] = {2, 4, 7, 8, 9, 12, 13}; // this is an array for the pins?
 
-
-
-void setColour(int colourIndex) {
-  analogWrite(pins[0], colours[colourIndex][0]);
-  analogWrite(pins[1], colours[colourIndex][1]);
-  analogWrite(pins[2], colours[colourIndex][2]);
-}
-
+int num_array[10][7] = {
+    {1, 1, 1, 1, 1, 1, 0}, // 0
+    {0, 1, 1, 0, 0, 0, 0}, // 1
+    {1, 1, 0, 1, 1, 0, 1}, // 2
+    {1, 1, 1, 1, 0, 0, 1}, // 3
+    {0, 1, 1, 0, 0, 1, 1}, // 4
+    {1, 0, 1, 1, 0, 1, 1}, // 5
+    {1, 0, 1, 1, 1, 1, 1}, // 6
+    {1, 1, 1, 0, 0, 0, 0}, // 7
+    {1, 1, 1, 1, 1, 1, 1}, // 8
+    {1, 1, 1, 0, 0, 1, 1}  // 9
+}; // this array combines with the top to create numbers
 
 void setup() {
-  Serial.begin(9600);
-
-  pinMode(redLed2, OUTPUT);
-  pinMode(greenLed2, OUTPUT);
-
-
-  pinMode(pins[0], OUTPUT);
-  pinMode(pins[1], OUTPUT);
-  pinMode(pins[2], OUTPUT);
-  digitalWrite(redLed2, HIGH);
-  setColour(1);
-
-
+  // Set pin modes
   for (int i = 0; i < 7; i++) {
     pinMode(segAtoGpinouts[i], OUTPUT);
   }
 }
 
 void loop() {
-
-  i = millis() - Bpressed;
-
-
-  if ((digitalRead(button) == HIGH) && !sequenceactive) {
-    Bpressed = millis();
-    sequenceactive = true;  // Set the sequenceactive flag
+  if (millis() - countchange >= 1000) {
+    countchange = millis();
+    counter--;
+    if (counter == -1) {
+      counter = 9;
+    }
+    ssdNumberWrite(counter);
   }
+}
 
-  if (sequenceactive) {  // Only execute the sequence when the flag is set
-    if (i < a) {
-      setColour(1);
-    }
-
-    if (i >= a) {
-      setColour(2);
-    }
-
-    if (i >= a + b) {
-      setColour(0);
-    }
-
-    if (i >= a + b + c) {
-      digitalWrite(redLed2, LOW);
-      digitalWrite(greenLed2, HIGH);
-      setColour(0);
-    }
-
-    if (i >= a + b + c + d) {
-
-      if (millis() - countchange >= 1000) {
-        countchange = millis();
-        ssdcount--;
-        if (ssdcount == -1) {
-          ssdcount = 9;
-        }
-      }
-      ssdNumberWrite(ssdcount);
-
-      digitalWrite(greenLed2, LOW);
-      digitalWrite(redLed2, LOW);
-
-      while (counter > 0) {
-        if (millis() - previousmillis >= interval) {
-          previousmillis = millis();
-
-         // if (digitalRead(redLed2 == LOW)) {
-           //digitalWrite(redLed2, HIGH);
-          }
-
-          if (digitalRead(redLed2 == HIGH)) {
-            digitalWrite(redLed2, LOW);
-            counter--;
-          }
-
-          sequenceactive = false;
-          counter = 20;
-        }
-      }
-      setColour(1);
-      digitalWrite(redLed2, HIGH);
-    }
-  }
-//}
-
+// This writes to the seven-segment display
 void ssdNumberWrite(int number) {
   for (int i = 0; i < 7; i++) {
     digitalWrite(segAtoGpinouts[i], num_array[number][i]);
