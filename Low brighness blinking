@@ -1,0 +1,135 @@
+//int redLed = 5;
+//int yellowLed = 6;
+//int greenLed = 7;
+int redLed2 = 10;
+int greenLed2 = 11 ;
+int button = 15;
+const int pins[3] = {5,6,3}; //9= red 10=blue 11= green 
+
+int colours[][3] = {
+  {255, 0, 0},    // Red
+  {0, 0, 255},    // Green
+  {255, 0, 165}};  // Orange
+
+bool sequenceactive = false;
+
+unsigned long Bpressed = 0; // Changed to unsigned long for millis()
+unsigned long previousMillis = 0;  // Stores the last time the LED state was toggled
+
+int counter =20;
+unsigned long i = 0;
+int interval= 100;
+unsigned long previousmillis = 0;
+unsigned long a = 3000;
+unsigned long b = 6000;
+unsigned long c = 1000;
+unsigned long d = 5000;
+unsigned long e = 5000;
+unsigned long f = 4000;
+unsigned long g = 8000;
+unsigned long h = 10000;
+
+
+
+void setColour(int colourIndex) {
+  analogWrite(pins[0], colours[colourIndex][0]);
+  analogWrite(pins[1], colours[colourIndex][1]);
+  analogWrite(pins[2], colours[colourIndex][2]);
+}
+
+
+void setup() {
+  Serial.begin(9600);
+
+  //pinMode(redLed, OUTPUT); // Added pinMode for LEDs
+  //pinMode(yellowLed, OUTPUT);
+  //pinMode(greenLed, OUTPUT);
+  pinMode(redLed2, OUTPUT);
+  pinMode(greenLed2, OUTPUT);
+
+  
+  pinMode(pins[0], OUTPUT);
+  pinMode(pins[1], OUTPUT);
+  pinMode(pins[2], OUTPUT);
+  
+  //digitalWrite(greenLed, HIGH);
+  digitalWrite(redLed2, HIGH);
+  setColour(1);
+}
+
+void loop() {
+  
+  i = millis() - Bpressed;
+
+
+  if ((digitalRead(button) == HIGH) && !sequenceactive)
+  {
+    Bpressed = millis();
+    sequenceactive = true; // Set the sequenceactive flag
+  }
+
+  if (sequenceactive) { // Only execute the sequence when the flag is set
+    if (i < a) {
+      setColour(1);
+    
+    } 
+    
+     if (i >= a) {
+      setColour(2);
+    }
+    
+     if (i >= a+b ) {
+    setColour(0);
+       
+    } 
+    
+     if (i >= a+b+c ) {
+       
+      digitalWrite(redLed2, LOW);
+      digitalWrite(greenLed2, HIGH);
+      setColour(0);
+    } 
+    
+}
+  
+ 
+ ///BLINKING START   
+    if (i >= a+b+c+d) {
+
+digitalWrite(greenLed2,LOW);
+
+ if (counter > 0) {
+  if (millis() - previousmillis >= interval) {
+   previousmillis = millis();
+
+        if (digitalRead(redLed2 == LOW)){ 
+          digitalWrite(redLed2,HIGH);
+        }
+    
+       if (digitalRead(redLed2 == HIGH)){
+            digitalWrite(redLed2,LOW);
+            counter--;
+            }
+    
+      sequenceactive = false;
+      counter = 20;
+  }
+  
+  if (i >= a+b+c+d+f) 
+  {  
+digitalWrite(greenLed2, LOW);
+digitalWrite(redLed2, HIGH);
+    setColour(0);
+  }
+  
+  
+if (i >= a+b+c+d+f+g)
+{
+digitalWrite(redLed2, HIGH);
+    setColour(1);
+}
+
+}
+  
+  }
+}
