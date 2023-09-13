@@ -45,8 +45,8 @@ unsigned long countchange = 0;
 int ssdcounter = 9;
 
 /////////// Variables for serial.print //////////
-String stateVAR = "";
-String inputVAR = "";
+String buttonVAR = "";
+int PIN_POT = A2;
 String trafficVAR = "";
 String pedestrianVAR = "";
   
@@ -121,10 +121,10 @@ void loop() {
     // different states of the code. these values can then be printed out every seccond.
 
     if (currentTime - previousTime > 1000) {
-      Serial.print("| State ");
-      Serial.print(stateVAR); 
-      Serial.print(" | INPUT ");
-      Serial.print(inputVAR);
+      Serial.print("| BUTTON ");
+      Serial.print(buttonVAR); 
+      Serial.print(" | POTENTIOMETER ");
+      Serial.print(analogRead(PIN_POT));
       Serial.print(" | TRAFFIC "); 
       Serial.print(trafficVAR); 
       Serial.print(" | PEDESTRIAN "); 
