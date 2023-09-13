@@ -133,14 +133,20 @@ void loop() {
       
       previousTime = currentTime;  // reset previousTime so currentTime and previousTime are identical.
     }
+  }
+  
 
-    if ((digitalRead(button) == HIGH) && !sequenceactive) {
-      Bpressed = millis();
-      sequenceactive = true;  // Set the sequenceactive flag
-    }
+  if (digitalRead(button) == HIGH) {
+    buttonVAR = "Pressed";
+  }
+  else {
+    buttonVAR = "Unpressed";
   }
 
-  if ((digitalRead(button) == HIGH) && !sequenceactive) {
+    
+
+
+  if ((digitalRead(button) == HIGH) && (sequenceactive == false)) {
     Bpressed = millis();
     sequenceactive = true;  // Set the sequenceactive flag
     ssdNumberWrite(0);
