@@ -1,5 +1,4 @@
-=///////SSD///////////////////////////////////////////////////////////////////
-int segAtoGpinouts[7] = { 2, 4, 7, 8, 9, 12, 13 };  // this is an array for the pins
+int segAtoGpinouts[7] = { 2, 4, 7, 8, 9, 12, 13 };  // this is an array for the pins?
 int num_array[10][7] = {
   { 1, 1, 1, 1, 1, 1, 0 },  // 0
   { 0, 1, 1, 0, 0, 0, 0 },  // 1
@@ -12,14 +11,12 @@ int num_array[10][7] = {
   { 1, 1, 1, 1, 1, 1, 1 },  // 8
   { 1, 1, 1, 0, 0, 1, 1 }   // 9
 };                          // this array combines with the top to create numbers
-//////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////
+
 int redLed2 = 10;
 int greenLed2 = 11;
 int button = 15;
 const int pins[3] = { 3, 5, 6 };  //9= red 10=blue 11= green
-
 
 int colours[][3] = {
   { 255, 0, 0 },  // Red
@@ -46,10 +43,6 @@ unsigned long g = 8000;
 unsigned long h = 10000;
 unsigned long countchange = 0;
 int ssdcounter = 9;
-
-const int potPin = 16; // Analog pin to read the potentiometer value
-const int ledPins[] = {3, 5, 6, 10, 11}; // Array of digital pins for the LEDs
-const int numLeds = 5; // Number of LEDs
 
 
 /////////// setup for millis print (unsigned long is largest arduino variable size)
@@ -93,55 +86,51 @@ void setup() {
 
 
 void loop() {
-  // put your main code here, to run repeatedly:void loop() {
-  currentTime = millis();  // Serial print millis
+  currentTime = millis();  // serial print millis
 
   i = millis() - Bpressed;
 
+  //PW_input = Serial.readString();  // reads from serial input and sets PW_input String as input from monitor.
   if (Serial.available()) {
-    char receivedChar = Serial.read();
-    if (receivedChar == '\n') {
-      PW_input = "";
-    } else {
-      PW_input += receivedChar;
-    }
+  char receivedChar = Serial.read();
+  if (receivedChar == '\n') {  // Check for newline character
+    // Process the entered password (PW_input) here
+    // Reset PW_input for the next input
+   PW_input = "";
+  } else {
+    // Append the received character to the password
+    PW_input += receivedChar;
   }
+}
 
-  if (PW_input == "Crossyroad") {
+  if (PW_input == "Crossyroad") {              // if the PW_input string is the correct password "Hello" it prints out "Access Granted"
     Serial.println("Success!");
-    trigger = !trigger;
+    trigger = !trigger;  // bool trigger is flipped to oposite value (false to true, or true to false)
   }
 
-  if (trigger == true) {
+  if (trigger == true) {  // if trigger bool is true run code
+
+    // the (variable) sections below are to be replaced with a new ints, bools or strings that have their value changed during the
+    // different states of the code. these values can then be printed out every seccond.
+
     if (currentTime - previousTime > 1000) {
       Serial.println("| State (variable) | INPUT (variable) | TRAFFIC (variable) | PEDESTRIAN (variable) |");
-      previousTime = currentTime;
+      previousTime = currentTime;  // reset previousTime so currentTime and previousTime are identical.
     }
 
     if ((digitalRead(button) == HIGH) && !sequenceactive) {
       Bpressed = millis();
-      sequenceactive = true;
-    }
-
-    // Read the value of the potentiometer (0-1023)
-    int potValue = analogRead(potPin);
-
-    // Map the potentiometer value (0-1023) to LED brightness (0-255)
-    int brightness = map(potValue, 0, 1023, 0, 255);
-
-    // Set the brightness for each LED individually
-    for (int i = 0; i < numLeds; i++) {
-      analogWrite(ledPins[i], brightness);
+      sequenceactive = true;  // Set the sequenceactive flag
     }
   }
 
   if ((digitalRead(button) == HIGH) && !sequenceactive) {
     Bpressed = millis();
-    sequenceactive = true;
+    sequenceactive = true;  // Set the sequenceactive flag
     ssdNumberWrite(0);
   }
 
-  if (sequenceactive) {
+  if (sequenceactive) {  // Only execute the sequence when the flag is set
     if (i < a) {
       setColour(1);
     }
@@ -155,6 +144,7 @@ void loop() {
     }
 
     if (i >= a + b + c) {
+
       digitalWrite(redLed2, LOW);
       digitalWrite(greenLed2, HIGH);
       setColour(0);
@@ -170,7 +160,12 @@ void loop() {
     }
   }
 
+
+
+  ///BLINKING START
   if (i >= a + b + c + d) {
+
+
     if (millis() - countchange >= 1000 && ssdcounter != 0) {
       countchange = millis();
       ssdcounter--;
@@ -188,8 +183,10 @@ void loop() {
 
         if (digitalRead(redLed2) == LOW) {
           digitalWrite(redLed2, HIGH);
+
         } else if (digitalRead(redLed2) == HIGH) {
           digitalWrite(redLed2, LOW);
+
           counter--;
         }
 
@@ -204,6 +201,7 @@ void loop() {
         ssdNumberWrite(0);
       }
 
+
       if (i >= a + b + c + d + f + g) {
         digitalWrite(redLed2, HIGH);
         setColour(1);
@@ -211,11 +209,11 @@ void loop() {
     }
   }
 }
+
+
+
 void ssdNumberWrite(int number) {
   for (int i = 0; i < 7; i++) {
     digitalWrite(segAtoGpinouts[i], num_array[number][i]);
   }
 }
-
-
-
