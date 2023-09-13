@@ -24,15 +24,21 @@ void setup() {
 }
 
 void loop() {
-  if (millis() - countchange >= 1000) {
-    countchange = millis();
-    counter--;
-    if (counter == -1) {
-      counter = 9;
+f (millis() - countchange >= 1000) {
+        countchange = millis();
+        ssdcounter--;
+        if (ssdcounter == -1) {
+          ssdcounter = 9;
+        }
+if (millis() - countchange >= 1000 && ssdcounter != 0) {
+      countchange = millis();
+      ssdcounter--;
+      if (ssdcounter == -1) {
+        ssdcounter = 4;
+      }
+      ssdNumberWrite(ssdcounter);
     }
-    ssdNumberWrite(counter);
-  }
-}
+
 
 // This writes to the seven-segment display
 void ssdNumberWrite(int number) {
