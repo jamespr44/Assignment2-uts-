@@ -43,7 +43,7 @@ unsigned long f = 4000;
 unsigned long g = 8000;
 unsigned long h = 10000;
 unsigned long countchange = 0;
-int ssdcounter = 9;
+int ssdcounter = 10;
 
 /////////// Variables for serial.print //////////
 String buttonVAR = "";
@@ -206,6 +206,10 @@ void loop() {
       ssdNumberWrite(ssdcounter);
     }
 
+    if ((i >= a + b + c + d + 4000) && (i <= a + b + c + d + 5000) && (sequenceactive == true)) {
+      ssdNumberWrite(0);
+    }
+
     digitalWrite(greenLed2, LOW);
     
 
@@ -220,10 +224,8 @@ void loop() {
 
         } else if (digitalRead(redLed2) == HIGH) {
           digitalWrite(redLed2, LOW);
-          
-
+        
           counter--;
-
         }
 
         //sequenceactive = false;
