@@ -221,6 +221,7 @@ void loop() {
           counter = 20;
         }
       }
+    }
       if (i >= a + b + c + d + f) {
         digitalWrite(greenLed2, LOW);
         digitalWrite(redLed2, HIGH);
@@ -236,7 +237,7 @@ void loop() {
         setColour(1);
         trafficVAR = "GREEN ";
       }
-    }
+    
   }
 }
 
