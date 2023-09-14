@@ -1,5 +1,5 @@
 int segAtoGpinouts[7] = { 2, 4, 7, 8, 9, 12, 13 };  // this is an array for the pins?
-int num_array[10][7] = {
+int num_array[11][7] = {
   { 1, 1, 1, 1, 1, 1, 0 },  // 0
   { 0, 1, 1, 0, 0, 0, 0 },  // 1
   { 1, 1, 0, 1, 1, 0, 1 },  // 2
