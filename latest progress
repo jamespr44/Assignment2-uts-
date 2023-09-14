@@ -201,7 +201,7 @@ void loop() {
     }
 
     digitalWrite(greenLed2, LOW);
-    pedestrianVAR = "GREEN "
+    pedestrianVAR = "GREEN ";
 
     if (counter > 0) {
       if (millis() - previousmillis >= interval) {
@@ -209,7 +209,7 @@ void loop() {
 
         if (digitalRead(redLed2) == LOW) {
           digitalWrite(redLed2, HIGH);
-          pedestrianVAR = "RED   "
+          pedestrianVAR = "RED   ";
 
         } else if (digitalRead(redLed2) == HIGH) {
           digitalWrite(redLed2, LOW);
@@ -227,7 +227,8 @@ void loop() {
         digitalWrite(redLed2, HIGH);
         setColour(0);
         ssdNumberWrite(0);
-        pedestrianVAR = "RED   "
+        pedestrianVAR = "RED   ";
+        trafficVAR = "RED   ";  
       
       }
 
@@ -235,6 +236,7 @@ void loop() {
       if (i >= a + b + c + d + f + g) {
         digitalWrite(redLed2, HIGH);
         setColour(1);
+        trafficVAR = "GREEN ";
       }
     }
   }
