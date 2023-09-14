@@ -1,0 +1,253 @@
+int segAtoGpinouts[7] = { 2, 4, 7, 8, 9, 12, 13 };  // this is an array for the pins?
+int num_array[10][7] = {
+  { 1, 1, 1, 1, 1, 1, 0 },  // 0
+  { 0, 1, 1, 0, 0, 0, 0 },  // 1
+  { 1, 1, 0, 1, 1, 0, 1 },  // 2
+  { 1, 1, 1, 1, 0, 0, 1 },  // 3
+  { 0, 1, 1, 0, 0, 1, 1 },  // 4
+  { 1, 0, 1, 1, 0, 1, 1 },  // 5
+  { 1, 0, 1, 1, 1, 1, 1 },  // 6
+  { 1, 1, 1, 0, 0, 0, 0 },  // 7
+  { 1, 1, 1, 1, 1, 1, 1 },  // 8
+  { 1, 1, 1, 0, 0, 1, 1 }   // 9
+};                          // this array combines with the top to create numbers
+
+
+int redLed2 = 10;
+int greenLed2 = 11;
+int button = 15;
+const int pins[3] = { 3, 5, 6 };  //9= red 10=blue 11= green
+
+int colours[][3] = {
+  { 255, 0, 0 },  // Red
+  { 0, 0, 255 },  // Green
+  { 255, 0, 150 }
+};  // Orange
+
+bool sequenceactive = false;
+
+unsigned long Bpressed = 0;        // Changed to unsigned long for millis()
+unsigned long previousMillis = 0;  // Stores the last time the LED state was toggled
+
+int counter = 20;
+unsigned long i = 0;
+int interval = 100;
+unsigned long previousmillis = 0;
+unsigned long a = 3000;
+unsigned long b = 6000;
+unsigned long c = 1000;
+unsigned long d = 5000;
+//unsigned long e = 5000; hertz
+unsigned long f = 4000;
+unsigned long g = 8000;
+unsigned long h = 10000;
+unsigned long countchange = 0;
+int ssdcounter = 9;
+
+/////////// Variables for serial.print //////////
+String buttonVAR = "";
+int PIN_POT = A2;
+String trafficVAR = "GREEN ";
+String pedestrianVAR = "RED   ";
+  
+  
+  
+/////////// setup for millis print (unsigned long is largest arduino variable size)
+unsigned long currentTime = 0;
+unsigned long previousTime = 0;
+
+/////////// bool for triggering print function when password is entered
+bool trigger = false;
+
+
+void setColour(int colourIndex) {
+  analogWrite(pins[0], colours[colourIndex][0]);
+  analogWrite(pins[1], colours[colourIndex][1]);
+  analogWrite(pins[2], colours[colourIndex][2]);
+}
+
+String PW_input = "";
+
+
+void setup() {
+  Serial.begin(9600);
+
+
+
+  pinMode(redLed2, OUTPUT);
+  pinMode(greenLed2, OUTPUT);
+
+
+  pinMode(pins[0], OUTPUT);
+  pinMode(pins[1], OUTPUT);
+  pinMode(pins[2], OUTPUT);
+
+  digitalWrite(redLed2, HIGH);
+  setColour(1);
+
+  Serial.println("Enter password");  // enter password prompt
+  for (int i = 0; i < 7; i++) {
+    pinMode(segAtoGpinouts[i], OUTPUT);
+  }
+}
+
+
+void loop() {
+  currentTime = millis();  // serial print millis
+
+  i = millis() - Bpressed;
+
+  //PW_input = Serial.readString();  // reads from serial input and sets PW_input String as input from monitor.
+  if (Serial.available()) {
+  char receivedChar = Serial.read();
+  if (receivedChar == '\n') {  // Check for newline character
+    // Process the entered password (PW_input) here
+    // Reset PW_input for the next input
+   PW_input = "";
+  } else {
+    // Append the received character to the password
+    PW_input += receivedChar;
+  }
+}
+
+  if (PW_input == "Crossyroad") {              // if the PW_input string is the correct password "Hello" it prints out "Access Granted"
+   
+    trigger = !trigger;  // bool trigger is flipped to oposite value (false to true, or true to false)
+  }
+
+  if (trigger == true) {  // if trigger bool is true run code
+
+    // the (variable) sections below are to be replaced with a new ints, bools or strings that have their value changed during the
+    // different states of the code. these values can then be printed out every seccond.
+
+    if (currentTime - previousTime > 2000) {
+      Serial.print("| BUTTON ");
+      Serial.print(buttonVAR); 
+      Serial.print(" | POTENTIOMETER ");
+      Serial.print(analogRead(PIN_POT));
+      Serial.print(" | TRAFFIC "); 
+      Serial.print(trafficVAR); 
+      Serial.print(" | PEDESTRIAN "); 
+      Serial.print(pedestrianVAR);
+      Serial.println(" |");
+      
+      previousTime = currentTime;  // reset previousTime so currentTime and previousTime are identical.
+    }
+  }
+  
+
+  if (digitalRead(button) == HIGH) {
+    buttonVAR = "Pressed";
+  }
+  else {
+    buttonVAR = "Unpressed";
+  }
+
+    
+
+
+  if ((digitalRead(button) == HIGH) && (sequenceactive == false)) {
+    Bpressed = millis();
+    sequenceactive = true;  // Set the sequenceactive flag
+    ssdNumberWrite(0);
+  }
+
+  if (sequenceactive) {  // Only execute the sequence when the flag is set
+    if (i < a) {
+      setColour(1); // Traffic green
+      trafficVAR = "GREEN ";
+    }
+
+    if ((i >= a) && (i < a + b)) {
+      setColour(2); // Traffic yellow
+      trafficVAR = "YELLOW";
+    }
+
+    if ((i >= a + b) && (i < a + b + c)) {
+      setColour(0); // Traffic red
+      trafficVAR = "RED   ";
+    }
+
+    if ((i >= a + b + c) && (i < a + b + c + d)){
+
+      digitalWrite(redLed2, LOW);
+      digitalWrite(greenLed2, HIGH);
+      setColour(0);
+
+      if (millis() - countchange >= 1000) {
+        countchange = millis();
+        ssdcounter--;
+        if (ssdcounter == -1) {
+          ssdcounter = 9;
+        }
+        ssdNumberWrite(ssdcounter);
+      }
+    }
+  }
+
+
+
+  ///BLINKING START
+  if ((i >= a + b + c + d) && (sequenceactive == true)) {
+
+
+    if (millis() - countchange >= 1000 && ssdcounter != 0) {
+      countchange = millis();
+      ssdcounter--;
+      if (ssdcounter == -1) {
+        ssdcounter = 4;
+      }
+      ssdNumberWrite(ssdcounter);
+    }
+
+    digitalWrite(greenLed2, LOW);
+    pedestrianVAR = "GREEN ";
+
+    if (counter > 0) {
+      if (millis() - previousmillis >= interval) {
+        previousmillis = millis();
+
+        if (digitalRead(redLed2) == LOW) {
+          digitalWrite(redLed2, HIGH);
+          pedestrianVAR = "FLASHING";
+
+        } else if (digitalRead(redLed2) == HIGH) {
+          digitalWrite(redLed2, LOW);
+          
+
+          counter--;
+
+        }
+
+        //sequenceactive = false;
+        counter = 20;
+      }
+
+      if ((i >= a + b + c + d + f) && (i <= a + b + c + d + f + g) && (sequenceactive == true)) {
+        digitalWrite(greenLed2, LOW);
+        digitalWrite(redLed2, HIGH);
+        setColour(0);
+        ssdNumberWrite(0);
+        pedestrianVAR = "RED   ";
+        trafficVAR = "RED   ";  
+      
+      }
+
+
+      if ((i >= a + b + c + d + f + g) && (sequenceactive == true)) {
+        digitalWrite(redLed2, HIGH);
+        setColour(1);
+        trafficVAR = "GREEN ";
+        sequenceactive = false;
+      }
+    }
+  }
+}
+
+
+
+void ssdNumberWrite(int number) {
+  for (int i = 0; i < 7; i++) {
+    digitalWrite(segAtoGpinouts[i], num_array[number][i]);
+  }
+}
