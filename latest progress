@@ -227,6 +227,8 @@ void loop() {
         digitalWrite(redLed2, HIGH);
         setColour(0);
         ssdNumberWrite(0);
+        pedestrianVAR = "RED   "
+      
       }
 
 
