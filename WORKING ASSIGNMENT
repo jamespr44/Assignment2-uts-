@@ -113,7 +113,7 @@ void loop() {
 
   if (PW_input == "Crossyroad") {              // if the PW_input string is the correct password "Hello" it prints out "Access Granted"
    
-    trigger = !trigger;  // bool trigger is flipped to oposite value (false to true, or true to false)
+    trigger = !trigger;  // bool trigger is flipped to opposite value (false to true, or true to false)
   }
 
   if (trigger == true) {  // if trigger bool is true run code
@@ -150,7 +150,7 @@ void loop() {
   if ((digitalRead(button) == HIGH) && (sequenceactive == false)) {
     Bpressed = millis();
     sequenceactive = true;  // Set the sequenceactive flag
-    ssdNumberWrite(0);
+    ssdNumberWrite(10);
   }
 
   if (sequenceactive) {  // Only execute the sequence when the flag is set
@@ -234,7 +234,7 @@ void loop() {
         digitalWrite(greenLed2, LOW);
         digitalWrite(redLed2, HIGH);
         setColour(0);
-        ssdNumberWrite(0);
+        ssdNumberWrite(10);
         pedestrianVAR = "RED   ";
         trafficVAR = "RED   ";  
       
