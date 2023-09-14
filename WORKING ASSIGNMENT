@@ -156,16 +156,19 @@ void loop() {
     if (i < a) {
       setColour(1); // Traffic green
       trafficVAR = "GREEN ";
+      pedestrianVAR = "RED   ";
     }
 
     if ((i >= a) && (i < a + b)) {
       setColour(2); // Traffic yellow
       trafficVAR = "YELLOW";
+      pedestrianVAR = "RED   ";
     }
 
     if ((i >= a + b) && (i < a + b + c)) {
       setColour(0); // Traffic red
       trafficVAR = "RED   ";
+      pedestrianVAR = "RED   ";
     }
 
     if ((i >= a + b + c) && (i < a + b + c + d)){
@@ -173,6 +176,8 @@ void loop() {
       digitalWrite(redLed2, LOW);
       digitalWrite(greenLed2, HIGH);
       setColour(0);
+      trafficVAR = "RED   ";
+      pedestrianVAR = "GREEN ";
 
       if (millis() - countchange >= 1000) {
         countchange = millis();
@@ -201,7 +206,7 @@ void loop() {
     }
 
     digitalWrite(greenLed2, LOW);
-    pedestrianVAR = "GREEN ";
+    
 
     if (counter > 0) {
       if (millis() - previousmillis >= interval) {
@@ -210,6 +215,7 @@ void loop() {
         if (digitalRead(redLed2) == LOW) {
           digitalWrite(redLed2, HIGH);
           pedestrianVAR = "FLASHING";
+          
 
         } else if (digitalRead(redLed2) == HIGH) {
           digitalWrite(redLed2, LOW);
@@ -238,6 +244,7 @@ void loop() {
         digitalWrite(redLed2, HIGH);
         setColour(1);
         trafficVAR = "GREEN ";
+        pedestrianVAR = "RED   ";
         sequenceactive = false;
       }
     }
