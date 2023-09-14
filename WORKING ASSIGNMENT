@@ -10,6 +10,7 @@ int num_array[10][7] = {
   { 1, 1, 1, 0, 0, 0, 0 },  // 7
   { 1, 1, 1, 1, 1, 1, 1 },  // 8
   { 1, 1, 1, 0, 0, 1, 1 }   // 9
+  { 0, 0, 0, 0, 0, 0, 0 }   // nil
 };                          // this array combines with the top to create numbers
 
 
