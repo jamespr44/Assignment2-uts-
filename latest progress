@@ -201,6 +201,7 @@ void loop() {
     }
 
     digitalWrite(greenLed2, LOW);
+    pedestrianVAR = "GREEN "
 
     if (counter > 0) {
       if (millis() - previousmillis >= interval) {
@@ -208,9 +209,11 @@ void loop() {
 
         if (digitalRead(redLed2) == LOW) {
           digitalWrite(redLed2, HIGH);
+          pedestrianVAR = "RED   "
 
         } else if (digitalRead(redLed2) == HIGH) {
           digitalWrite(redLed2, LOW);
+          
 
           counter--;
         }
