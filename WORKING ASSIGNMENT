@@ -69,6 +69,7 @@ void setColour(int colourIndex) {
 
 String PW_input = "";
 
+bool Bpressed2 = true;
 
 void setup() {
   Serial.begin(9600);
@@ -136,16 +137,36 @@ void loop() {
     }
   }
   
-
   if (digitalRead(button) == HIGH) {
-    buttonVAR = "Pressed";
+    buttonVAR = "Pressed  ";
   }
   else {
     buttonVAR = "Unpressed";
   }
+  
+
+  if ((digitalRead(button) == HIGH) && (trigger == true) && (Bpressed2 == false)) { //print when button pressed
+     
+     Bpressed2 = true;
+
+      Serial.print("| BUTTON ");
+      Serial.print(buttonVAR); 
+      Serial.print(" | POTENTIOMETER ");
+      Serial.print(analogRead(PIN_POT));
+      Serial.print(" | TRAFFIC "); 
+      Serial.print(trafficVAR); 
+      Serial.print(" | PEDESTRIAN "); 
+      Serial.print(pedestrianVAR);
+      Serial.println(" |");
+  } 
+  if (digitalRead(button) == LOW) {
+    Bpressed2 = false;
+  }
+  
+  
 
     
-
+  
 
   if ((digitalRead(button) == HIGH) && (sequenceactive == false)) {
     Bpressed = millis();
